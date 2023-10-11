@@ -1,0 +1,8 @@
+train: "/kaggle/working/yolov8/mydata/paper_data/train.txt"
+val: "/kaggle/working/yolov8/mydata/paper_data/val.txt"
+
+names:
+  0: car
+  1: person
+
+nc: 2
