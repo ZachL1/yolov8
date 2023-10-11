@@ -2,11 +2,19 @@
 import xml.etree.ElementTree as ET
 import os
 from os import getcwd
+import argparse
  
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--base_dir', default='/mnt/d/workspace/yolov8', type=str, help='work dir')
+args = parser.parse_args()
+
 sets = ['train', 'val', 'test']
 classes = ["car", "person"]   # 改成自己的类别
-abs_path = os.getcwd()
-print(abs_path)
+
+# base_dir = os.getcwd()
+base_dir = args.base_dir
+print(base_dir)
  
 def convert(size, box):
     dw = 1. / (size[0])
@@ -22,8 +30,8 @@ def convert(size, box):
     return x, y, w, h
  
 def convert_annotation(image_id):
-    in_file = open('mydata/xml/%s.xml' % (image_id), encoding='UTF-8')
-    out_file = open('mydata/labels/%s.txt' % (image_id), 'w')
+    in_file = open(f'{base_dir}/mydata/xml/{image_id}.xml', encoding='UTF-8')
+    out_file = open(f'{base_dir}/mydata/labels/{image_id}.txt', 'w')
     tree = ET.parse(in_file)
     root = tree.getroot()
     size = root.find('size')
@@ -52,11 +60,14 @@ def convert_annotation(image_id):
  
 wd = getcwd()
 for image_set in sets:
-    if not os.path.exists('mydata/labels/'):
-        os.makedirs('mydata/labels/')
-    image_ids = open('mydata/dataSet/%s.txt' % (image_set)).read().strip().split()
-    list_file = open('mydata/paper_data/%s.txt' % (image_set), 'w')
+    if not os.path.exists(f'{base_dir}/mydata/labels/'):
+        os.makedirs(f'{base_dir}/mydata/labels/')
+    if not os.path.exists(f'{base_dir}/mydata/paper_data/'):
+        os.makedirs(f'{base_dir}/mydata/paper_data/')
+
+    image_ids = open(f'{base_dir}/mydata/dataSet/{image_set}.txt').read().strip().split()
+    list_file = open(f'{base_dir}/mydata/paper_data/{image_set}.txt', 'w')
     for image_id in image_ids:
-        list_file.write(abs_path + '/mydata/images/%s.JPG\n' % (image_id))
+        list_file.write(base_dir + '/mydata/images/%s.JPG\n' % (image_id))
         convert_annotation(image_id)
     list_file.close()

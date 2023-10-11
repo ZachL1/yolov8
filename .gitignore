@@ -165,7 +165,6 @@ pnnx*
 /ultralytics/assets/
 
 
-mydata/dataSet
 mydata/images
 mydata/labels
 mydata/paper_data
