@@ -68,6 +68,9 @@ for image_set in sets:
     image_ids = open(f'{base_dir}/mydata/dataSet/{image_set}.txt').read().strip().split()
     list_file = open(f'{base_dir}/mydata/paper_data/{image_set}.txt', 'w')
     for image_id in image_ids:
-        list_file.write(base_dir + '/mydata/images/%s.JPG\n' % (image_id))
+        if image_id[:3] == 'DJI':
+            list_file.write(base_dir + '/mydata/images/%s.JPG\n' % (image_id))
+        else:
+            list_file.write(base_dir + '/mydata/images/%s.jpg\n' % (image_id))
         convert_annotation(image_id)
     list_file.close()
